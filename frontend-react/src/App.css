@@ -1,0 +1,444 @@
+/* ================================
+   Palette principale
+================================ */
+:root {
+  --blue: #4cb5f5;
+  --blue-deep: #1f7fcc;
+  --pink: #f8a6c8;
+  --pink-soft: #ffe6f3;
+  --bg-light: #f5f7ff;
+  --text-main: #0f172a;
+  --text-soft: #4b5563;
+}
+
+/* ================================
+   Reset simple
+================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, #dbeafe 0, transparent 55%),
+    radial-gradient(circle at top right, #ffe4f2 0, transparent 55%),
+    radial-gradient(circle at bottom, #e0fbff 0, transparent 55%),
+    #fdfbff;
+  color: var(--text-main);
+}
+
+/* ================================
+   Racine de la page
+================================ */
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ================================
+   Panneau principal glassmorphism
+================================ */
+.glass-layout {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 520px;
+  display: flex;
+  border-radius: 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(255, 255, 255, 0.7)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 26px 60px rgba(148, 163, 184, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  overflow: hidden;
+}
+
+/* Gros cercles en fond */
+.glass-layout::before,
+.glass-layout::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(200, 230, 255, 0.7),
+    rgba(200, 230, 255, 0)
+  );
+  pointer-events: none;
+}
+
+.glass-layout::before {
+  width: 340px;
+  height: 340px;
+  left: -120px;
+  bottom: -120px;
+}
+
+.glass-layout::after {
+  width: 420px;
+  height: 420px;
+  right: -140px;
+  top: -140px;
+}
+
+/* ================================
+   COLONNE GAUCHE (sidebar)
+================================ */
+.sidebar {
+  position: relative;
+  z-index: 1;
+  width: 26%;
+  min-width: 240px;
+  padding: 26px 22px;
+  border-right: 1px solid rgba(226, 232, 240, 0.9);
+  background: linear-gradient(
+    180deg,
+    rgba(219, 234, 254, 0.95),
+    rgba(255, 237, 248, 0.9)
+  );
+}
+
+/* Profil en haut */
+.profile-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--blue), var(--pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: 0 12px 25px rgba(148, 163, 184, 0.7);
+}
+
+.profile-text h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-main);
+}
+
+.profile-text p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* Navigation */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 26px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-soft);
+  transition:
+    background 0.16s ease,
+    transform 0.12s ease,
+    color 0.12s ease;
+}
+
+.nav-item .nav-icon {
+  font-size: 18px;
+}
+
+.nav-item:hover {
+  background: rgba(148, 163, 184, 0.18);
+  transform: translateY(-1px);
+}
+
+.nav-item.active {
+  background: linear-gradient(120deg, var(--blue), var(--pink));
+  color: white;
+}
+
+/* Bloc CTA en bas */
+.sidebar-cta {
+  margin-top: auto;
+  padding: 14px 12px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(76, 181, 245, 0.13),
+    rgba(248, 166, 200, 0.28)
+  );
+  border: 1px solid rgba(248, 166, 200, 0.6);
+  box-shadow: 0 16px 30px rgba(248, 166, 200, 0.4);
+}
+
+.sidebar-cta p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(120deg, var(--blue-deep), var(--pink));
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.5);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.6);
+}
+
+/* ================================
+   COLONNE DROITE (main panel)
+================================ */
+.main-panel {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 26px 30px;
+}
+
+/* Header de droite */
+.main-header h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  color: var(--text-main);
+}
+
+.main-header p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* Barre de recherche */
+.search-bar {
+  position: relative;
+  width: 60%;
+  max-width: 360px;
+  margin-bottom: 26px;
+}
+
+.search-bar input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 8px 34px 8px 14px;
+  font-size: 13px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.search-bar input::placeholder {
+  color: #9ca3af;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* ================================
+   Liste des jeux
+================================ */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Ligne de jeu (cartes) */
+.game-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.86)
+  );
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  box-shadow: 0 10px 24px rgba(148, 163, 184, 0.18);
+}
+
+.game-row:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(148, 163, 184, 0.35);
+}
+
+/* Vignette du jeu */
+.game-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: white;
+}
+
+/* Couleurs par type de jeu */
+.quiz-thumb {
+  background: linear-gradient(135deg, var(--blue), var(--pink));
+}
+
+.bfs-thumb {
+  background: linear-gradient(135deg, #6366f1, #22c55e);
+}
+
+.listen-thumb {
+  background: linear-gradient(135deg, #ec4899, #f97316);
+}
+
+/* Texte du jeu */
+.game-info h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.game-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.game-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(219, 234, 254, 0.9);
+  font-size: 11px;
+  color: #1d4ed8;
+}
+
+/* Zone de progression */
+.game-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.progress-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.progress-track {
+  width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.quiz-fill {
+  background: linear-gradient(90deg, var(--blue), var(--pink));
+}
+
+.bfs-fill {
+  background: linear-gradient(90deg, #6366f1, #22c55e);
+}
+
+.listen-fill {
+  background: linear-gradient(90deg, #ec4899, #f97316);
+}
+
+.progress-percent {
+  font-size: 12px;
+  color: var(--text-main);
+}
+
+/* ================================
+   Responsive
+================================ */
+@media (max-width: 900px) {
+  .glass-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  }
+}
+
+@media (max-width: 640px) {
+  .main-panel {
+    padding: 20px 18px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .game-row {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .game-progress {
+    align-items: flex-start;
+  }
+}
