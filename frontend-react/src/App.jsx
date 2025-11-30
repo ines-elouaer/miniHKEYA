@@ -5,6 +5,8 @@ import Accueil from "./pages/Accueil.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import ChnouwaSar from "./pages/ChnouwaSar.jsx";
 import RobotKelma from "./pages/RobotKelma.jsx";
+import StoryBotGame from "./pages/StoryBotGame.jsx";   // 🔹 nouvel import
+
 function App() {
   return (
     <BrowserRouter>
@@ -14,9 +16,15 @@ function App() {
 
         {/* Page Quiz */}
         <Route path="/quiz" element={<Quiz />} />
-<Route path="/game/robot" element={<RobotKelma />} />
+
+        {/* Page Robot */}
+        <Route path="/game/robot" element={<RobotKelma />} />
+
         {/* Page jeu CHNOUWA SAR */}
         <Route path="/game/chnouwa-sar" element={<ChnouwaSar />} />
+
+        {/* Page STORY BOT */}
+        <Route path="/game/story-bot" element={<StoryBotGame />} />
       </Routes>
     </BrowserRouter>
   );
