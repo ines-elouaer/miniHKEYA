@@ -1,7 +1,8 @@
 # backend/main.py
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 # ===================== QUIZ / LABYRINTHE =====================
 
@@ -33,6 +34,25 @@ from game_robot.service import (
     generate_round as robot_generate_round,
     check_round as robot_check_round,
 )
+
+# ===================== STORY BOT =====================
+
+from story_bot.data import get_story
+
+
+
+# ===================== MODELES STORY BOT =====================
+
+class StoryBotRequest(BaseModel):
+    theme: str
+    level: int
+
+
+class StoryBotResponse(BaseModel):
+    theme: str
+    level: int
+    story: str
+
 
 # =============================================================
 
@@ -110,3 +130,12 @@ def robot_generate(req: RobotGenerateRequest):
 @app.post("/game/robot/check", response_model=RobotCheckResponse)
 def robot_check(req: RobotCheckRequest):
     return robot_check_round(req)
+
+# ===================== STORY BOT =====================
+
+@app.post("/game/story-bot/generate", response_model=StoryBotResponse)
+def story_bot_generate(req: StoryBotRequest):
+    story = get_story(req.theme, req.level)
+    if story is None:
+        raise HTTPException(status_code=404, detail="Story not found")
+    return StoryBotResponse(theme=req.theme, level=req.level, story=story)
