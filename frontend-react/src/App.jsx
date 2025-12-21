@@ -1,30 +1,94 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
 import Accueil from "./pages/Accueil.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import ChnouwaSar from "./pages/ChnouwaSar.jsx";
 import RobotKelma from "./pages/RobotKelma.jsx";
-import StoryBotGame from "./pages/StoryBotGame.jsx";   // 🔹 nouvel import
+import StoryBotGame from "./pages/StoryBotGame.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import FamilyLabyrinth from "./pages/FamilyLabyrinth.jsx";
+
+function RequireAuth({ children }) {
+  const token = localStorage.getItem("token");
+  
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Page d'accueil */}
-        <Route path="/" element={<Accueil />} />
+        {/* redirection par défaut vers /login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Page Quiz */}
-        <Route path="/quiz" element={<Quiz />} />
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* Page Robot */}
-        <Route path="/game/robot" element={<RobotKelma />} />
+        {/* Accueil protégé */}
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              <Accueil />
+            </RequireAuth>
+          }
+        />
 
-        {/* Page jeu CHNOUWA SAR */}
-        <Route path="/game/chnouwa-sar" element={<ChnouwaSar />} />
+        {/* Quiz */}
+        <Route
+          path="/quiz"
+          element={
+            <RequireAuth>
+              <Quiz />
+            </RequireAuth>
+          }
+        />
 
-        {/* Page STORY BOT */}
-        <Route path="/game/story-bot" element={<StoryBotGame />} />
+        {/* Robot Kalma */}
+        <Route
+          path="/game/robot"
+          element={
+            <RequireAuth>
+              <RobotKelma />
+            </RequireAuth>
+          }
+        />
+
+        {/* Chnouwa Sar */}
+        <Route
+          path="/game/chnouwa-sar"
+          element={
+            <RequireAuth>
+              <ChnouwaSar />
+            </RequireAuth>
+          }
+        />
+
+        {/* Story Bot */}
+        <Route
+          path="/game/story-bot"
+          element={
+            <RequireAuth>
+              <StoryBotGame />
+            </RequireAuth>
+          }
+        />
+
+        {/* ✅ Cherche la famille */}
+        <Route
+          path="/game/family"
+          element={
+            <RequireAuth>
+              <FamilyLabyrinth />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

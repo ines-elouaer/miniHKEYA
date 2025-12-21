@@ -1,0 +1,10 @@
+# Python
+**/__pycache__/
+*.pyc
+
+# Environnement Python (local)
+backend/venv/
+
+# React / Node
+frontend-react/node_modules/
+frontend-react/dist/

@@ -20,20 +20,19 @@ function speak(text) {
 
   const utterance = new SpeechSynthesisUtterance(normalized);
 
-  // 🔴 ESSAIE CES 2 LIGNES UNE PAR UNE :
   // 1) pour arabe standard :
   utterance.lang = "ar-SA";
   // 2) si ton histoire est plutôt en français :
   // utterance.lang = "fr-FR";
 
-  utterance.rate = 0.9;   // un peu plus lent
-  utterance.pitch = 1;    // tonalité normale
+  utterance.rate = 0.9; // un peu plus lent
+  utterance.pitch = 1; // tonalité normale
 
-  // Facultatif : essayer de choisir une voix arabe si dispo
+  // Essayer de choisir une voix arabe si dispo
   const voices = window.speechSynthesis.getVoices();
   const arabicVoice =
-    voices.find(v => v.lang.startsWith("ar")) ||
-    voices.find(v => v.lang.startsWith("fr"));
+    voices.find((v) => v.lang.startsWith("ar")) ||
+    voices.find((v) => v.lang.startsWith("fr"));
 
   if (arabicVoice) {
     utterance.voice = arabicVoice;
@@ -42,9 +41,9 @@ function speak(text) {
   window.speechSynthesis.speak(utterance);
 }
 
-
 export default function StoryBotGame() {
   const [story, setStory] = useState("");
+  const [level, setLevel] = useState(1); // niveau par défaut = 1
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -52,57 +51,54 @@ export default function StoryBotGame() {
   const [spokenText, setSpokenText] = useState("");
 
   // 🔄 Appel backend + lecture de l’histoire
-const handleGenerate = async () => {
-  setLoading(true);
-  setStory("");
-  setError("");
+  const handleGenerate = async () => {
+    setLoading(true);
+    setStory("");
+    setError("");
 
-  try {
-    // on utilise ce que l’utilisateur a écrit comme thème
-    const themeToSend = spokenText.trim() || "famille";
+    try {
+      const themeToSend = spokenText.trim() || "famille";
 
-    const res = await fetch("http://127.0.0.1:8000/game/story-bot/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        theme: themeToSend,
-        level: 1,
-      }),
-    });
+      const res = await fetch(
+        "http://127.0.0.1:8000/game/story-bot/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            theme: themeToSend,
+            level: level, // 👈 on envoie le niveau choisi
+          }),
+        }
+      );
 
-    if (!res.ok) {
-      const data = await res.json().catch(() => null);
-      throw new Error(data?.detail || "Erreur côté backend");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.detail || "Erreur côté backend");
+      }
+
+      const data = await res.json();
+      console.log("Réponse backend:", data);
+
+      if (!data.story) {
+        setError("Story not found");
+        return;
+      }
+
+      setStory(data.story);
+      speak(data.story);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Erreur inconnue");
+    } finally {
+      setLoading(false);
     }
-
-    const data = await res.json();
-    console.log("Réponse backend:", data);
-
-    // si le backend ne renvoie rien
-    if (!data.story) {
-      setError("Story not found");
-      return;
-    }
-
-    // 👀 on affiche l’histoire
-    setStory(data.story);
-
-    // 🔊 on lit TOUTE l’histoire, pas juste "famille"
-    speak(data.story);
-  } catch (err) {
-    console.error(err);
-    setError(err.message || "Erreur inconnue");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   // 💬 texte dans la bulle au-dessus du robot
   const bubbleText = loading
-    ? "Nستنى شوية... na7ki 7keya jdida 🔄"
+    ? "ستنى شوية... na7ki 7keya jdida 🔄"
     : spokenText.trim() || "T7ebb n7ki-lk 7keya tawa ?";
 
   return (
@@ -115,15 +111,14 @@ const handleGenerate = async () => {
             Chnouwa <span>Sar ?</span>
           </h1>
           <p className="story-card-desc">
-            Écris un thème, laisse ton petit avatar le lire, puis écoute la 7keya générée 💫
+            Écris un thème, laisse ton petit avatar le lire, puis écoute la
+            7keya générée 💫
           </p>
         </header>
 
         {/* Avatar + bulle */}
         <div className="story-avatar-zone">
-          <div className="story-avatar-bubble">
-            {bubbleText}
-          </div>
+          <div className="story-avatar-bubble">{bubbleText}</div>
 
           <div className="story-avatar-ring">
             <div className="story-avatar-inner">
@@ -134,7 +129,7 @@ const handleGenerate = async () => {
           </div>
         </div>
 
-        {/* Champ où l’utilisateur écrit */}
+        {/* Champ où l’utilisateur écrit + niveau */}
         <section className="echo-input-block">
           <label htmlFor="echoInput" className="echo-input-label">
             Écris le thème de ta 7keya (ex. famille, école, souk...) :
@@ -154,8 +149,30 @@ const handleGenerate = async () => {
               type="button"
               className="echo-send-btn"
               onClick={handleGenerate}
+              disabled={loading}
             >
               ➤
+            </button>
+          </div>
+
+          {/* 🔽 Sélecteur de niveau sous le champ */}
+          <div className="story-level-toggle">
+            <span className="story-level-label">Niveau :</span>
+
+            <button
+              type="button"
+              onClick={() => setLevel(1)}
+              className={`level-pill ${level === 1 ? "active" : ""}`}
+            >
+              1 • 6–7 ans
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setLevel(2)}
+              className={`level-pill ${level === 2 ? "active" : ""}`}
+            >
+              2 • 8–10 ans
             </button>
           </div>
         </section>
@@ -177,9 +194,7 @@ const handleGenerate = async () => {
         <h2>Hkeyetna 📖</h2>
         <div className="story-output-bubble">
           {loading && (
-            <span>
-              miniHKEYA Bot réfléchit à une nouvelle histoire...
-            </span>
+            <span>miniHKEYA Bot réfléchit à une nouvelle histoire...</span>
           )}
 
           {!loading && story && <span>{story}</span>}
@@ -187,7 +202,8 @@ const handleGenerate = async () => {
           {!loading && !story && !error && (
             <span>
               Écris un thème (ex. <strong>famille</strong>), puis clique sur{" "}
-              <strong>“Lancer l’histoire”</strong> ou sur la flèche pour écouter ta première 7keya 🌙
+              <strong>“Lancer l’histoire”</strong> ou sur la flèche pour écouter
+              ta première 7keya 🌙
             </span>
           )}
 

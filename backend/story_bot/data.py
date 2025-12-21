@@ -1,25 +1,69 @@
 # backend/story_bot/data.py
 
+# On définit quelques histoires par défaut pour tester
+# Tu pourras en ajouter autant que tu veux
+
 STORIES = {
-    ("famille", 1): [
-        "نهار من نهارات، صغيرة اسمها مريم قعدت مع جدّتها في السطح. جدّتها حكاتلها حكاية قديمة على طفولتها، كيفاش كانت تلعب في الحومة مع صحابها و تغنّي معاهم. مريم كانت تسمع و تضحك، و في الآخر قالتلها جدّتها: «أهم حاجة في الدنيا هي العائلة و القلوب اللي تحبّك»."
-    ],
-    ("ecole", 1): [
-        "نهار الاثنين، آسر مشى للمدرسة فرحان، شايل محفظتو الجديدة و دفترو الملوّن. في القسم، المعلّمة عطاتهم واجب صغير: كل واحد يحكي على حلمو. آسر قال يحب يولي طبيب باش يعاون الناس. صحابو صفّقولو و المعلّمة قالتلو: «كي تقرا و تتعب، كل شي ممكن»."
-    ],
-    ("souk", 1): [
-        "فولان مشى للسوق مع بوّه، يسمع أصوات البياعة و يشمّ ريحة الخبز السخون و البهارات. شاف قطوسة صغيرة تتمشى بين الناس، عطاها شوية خبز و ضحكتلو كأنها تشكرو. في الطريق للدار، بوّه قالو: «كي تعطي من قلبك، ربي يبعثلك الخير من حيث لا تحتسب»."
-    ],
+    # level 1
+    (1, "plage"): """
+نهار من النهارات، أمين و أختو سارة مشاو للبحر في حمّامات.
+الشمس كانت تضحك، و الموج يلعب معاهم.
+أمين بنا قلعة كبيرة بالرملة، و سارة زينتها بالصدف.
+في الآخر، جا موجة كبيرة شوية و هزّ نص القلعة...
+ضحكوا و قالوا: موش مشكل، غدوة نعملو وحدة أكبر!
+""",
+
+    (1, "ecole"): """
+اليوم الأول في المدرسة كان شويّة يخوّف بالنسبة ليوسف.
+دخل للقسم و شاف برشا صغار ما يعرفهمش.
+المعلّمة ضحكتلو و قالتلو: "مرحبا بيك يوسف!"
+في العشية، خرج فرحان خاتر تعرّف على صاحب جديد اسمو آدم.
+""",
+
+    # level 2
+    (2, "plage"): """
+في عطلة الصيف، خديجة و هادي مشاو للبحر مع عايلتهم.
+جابو معاهم كرة، و لعبو ماتش كبير فوق الرملة.
+فجأة، كرة طاحت في الماء و بدات تبعد شوية شوية.
+هادي جرى و طاح شويّة فالماء، أما شدّ الكرة و رجع يضحك.
+""",
+
+    (2, "ecole"): """
+في المدرسة، حسام كان ديما يحب يجاوب في القسم.
+نهار من النهارات، جا المعلّم بسؤال صعيب شوية.
+حسام رفع يدو و جرّب يجاوب، حتى كان موش كامل صحيح.
+المعلّم شجّعو و قالو: "المهم تحاول، و المرّة الجاية تكون أحسن!"
+""",
+
+    # histoire par défaut pour tout niveau / thème
+    ("default", "default"): """
+هاذي حكاية صغيرة على طفل/طفلة يحب يتعلّم كلمات جديدة بالتونسي.
+كل نهار يلعب في miniHKEYA، يتعلّم حاجة جديدة و يضحك و يتفرهد.
+أهم حاجة إنو ما يخافش يغلط، خاتر بالغلط نتعلّمو.
+"""
 }
 
 
-def get_story(theme: str, level: int):
+def get_story(theme: str, level: int) -> str | None:
     """
-    Retourne une histoire pour un thème et un niveau donnés.
-    Si rien n'est trouvé, retourne None.
+    Retourne une histoire en fonction du thème et du niveau.
+    Si rien ne correspond, retourne une histoire par défaut.
     """
-    key = (theme, level)
-    stories_for_key = STORIES.get(key)
-    if not stories_for_key:
-        return None
-    return stories_for_key[0]
+    theme_lower = theme.lower()
+
+    # On essaie de détecter un thème simple
+    if "plage" in theme_lower or "mer" in theme_lower:
+        key_theme = "plage"
+    elif "école" in theme_lower or "ecole" in theme_lower:
+        key_theme = "ecole"
+    else:
+        key_theme = "default"
+
+    # On cherche d'abord une histoire spécifique (level, theme)
+    story = STORIES.get((level, key_theme))
+
+    # Sinon, on prend la par défaut
+    if story is None:
+        story = STORIES.get(("default", "default"))
+
+    return story
