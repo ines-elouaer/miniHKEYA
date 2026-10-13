@@ -120,12 +120,6 @@ La liste complète est disponible sur `/docs`.
 
 ---
 
-## Déploiement sur Azure
-
-Les images Docker sont publiées sur **Azure Container Registry** puis déployées sur **Azure Container Apps**, avec HTTPS automatique.
-
-- Application : https://ca-minihkeya-frontend.jollyground-f04d0bd3.francecentral.azurecontainerapps.io
-- Documentation de l'API : https://ca-minihkeya-backend.jollyground-f04d0bd3.francecentral.azurecontainerapps.io/docs
 
 ---
 
