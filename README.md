@@ -21,6 +21,7 @@ Le projet repose sur une architecture **React / FastAPI / PostgreSQL**, avec un 
 - Plusieurs niveaux de difficulté, avec des sons de réussite et d'échec.
 
 ### Jeu 2 – Le labyrinthe de la famille
+- À chaque partie, l'IA génère un nouveau labyrinthe en plaçant les obstacles de façon aléatoire.
 - L'enfant déplace un personnage avec les flèches du clavier ou les boutons pour retrouver un membre de sa famille (emoji et nom en arabe).
 - Temps limité et système de vies : un mur fait perdre 1 cœur, une case rouge en fait perdre 2.
 - Les boutons 🤖 montrent comment l'IA trouve le chemin le plus court grâce à l'algorithme **BFS** (parcours en largeur).
