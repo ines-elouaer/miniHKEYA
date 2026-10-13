@@ -1,0 +1,36 @@
+# Fichiers d'environnement (secrets)
+.env
+.env.local
+**/.env
+**/.env.local
+!.env.example
+
+# Python
+.venv/
+venv/
+**/.venv/
+__pycache__/
+*.pyc
+
+# Node / Vite
+node_modules/
+dist/
+.vite/
+
+# Archives
+*.zip
+
+# Logs
+*.log
+
+# Éditeur
+.vscode/
+.idea/
+
+# Système
+.DS_Store
+Thumbs.db
+# Poids des modèles (trop lourds pour GitHub)
+backend/models/
+*.safetensors
+*.bin

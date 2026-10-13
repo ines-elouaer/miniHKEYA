@@ -1,0 +1,21 @@
+/* Reset simple + font globale */
+
+/* Police par défaut pour toute l'app */
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+}
+
+/* Box-sizing pour layout propre */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* On enlève les marges du body,
+   le reste du design est géré dans App.css */
+body {
+  margin: 0;
+  padding: 0;
+}

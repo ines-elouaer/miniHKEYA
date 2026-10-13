@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["ollama serve & sleep 5 && ollama pull qwen2.5:1.5b-instruct && wait"]
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+
+  backend:
+    build: ./backend
+    environment:
+      RUNNING_IN_DOCKER: "1"
+      DATABASE_URL: postgresql+psycopg2://appuser:apppass@db:5432/appdb
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: qwen2.5:1.5b-instruct
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - ollama
+
+  frontend:
+    build: ./frontend-react
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  ollama:

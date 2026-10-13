@@ -1,0 +1,61 @@
+/* src/components/Sidebar.css */
+
+/* ✅ Avatar: cercle “glass” + contour dégradé (bleu → rose) comme ton UI */
+.avatar{
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 3px;                        /* épaisseur du contour */
+  cursor: pointer;
+  flex-shrink: 0;
+
+  /* contour dégradé */
+  background: linear-gradient(135deg, #4aa3ff, #ff7ac8);
+
+  /* petit glow doux */
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.10),
+    0 0 0 1px rgba(255,255,255,0.35) inset;
+}
+
+/* ✅ anneau interne transparent / glass */
+.avatar::before{
+  content: "";
+  position: absolute;
+}
+
+/* on fait un “inner circle” glass avec un wrapper interne */
+.avatar{
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.avatar .avatar-inner{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+
+  /* effet verre/transparent */
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* bord interne léger */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.45) inset;
+
+  display: grid;
+  place-items: center;
+}
+
+/* ✅ l’image dedans */
+.avatar .avatar-inner img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                  /* remplit le cercle */
+  display: block;
+  transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
+}
