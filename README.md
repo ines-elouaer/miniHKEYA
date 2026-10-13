@@ -54,16 +54,6 @@ Le projet repose sur une architecture **React / FastAPI / PostgreSQL**, avec un 
 
 ---
 
-## Architecture
-
-```mermaid
-flowchart LR
-    U[Navigateur] --> F[Frontend React<br/>servi par Nginx]
-    F -->|API REST + JWT| B[Backend FastAPI]
-    B --> D[(PostgreSQL 16)]
-    B --> O[Ollama<br/>Qwen 2.5 1.5B]
-    B --> T[Synthèse vocale]
-```
 
 | Composant | Rôle |
 | --- | --- |
